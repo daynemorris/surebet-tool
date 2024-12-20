@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Surebet Tool
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Adds bet size calculation and copy functionality to Surebet rows
 // @author       You
 // @match        https://en.surebet.com/valuebets
@@ -127,6 +127,14 @@
                     copyButton.style.backgroundColor = '#007bff';
                     copyButton.textContent = 'Copy Bet';
                 }, 1500);
+
+                // Find and click the hide button after copying
+                const hideButton = row.querySelector('.dropdown-item[title="Hide this valuebet"]');
+                if (hideButton) {
+                    setTimeout(() => {
+                        hideButton.click();
+                    }, 500); // Half second delay before hiding
+                }
             });
 
             const lastCell = row.querySelector('td:last-child');
