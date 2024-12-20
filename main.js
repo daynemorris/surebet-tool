@@ -83,15 +83,51 @@
             const copyButton = document.createElement('button');
             copyButton.textContent = 'Copy Bet';
             copyButton.className = 'copy-bet-button';
-            copyButton.style.marginLeft = '10px';
-            copyButton.style.padding = '5px 10px';
-            copyButton.style.backgroundColor = '#007bff';
-            copyButton.style.color = '#fff';
-            copyButton.style.border = 'none';
-            copyButton.style.borderRadius = '5px';
-            copyButton.style.cursor = 'pointer';
+            copyButton.style.cssText = `
+                margin-left: 10px;
+                padding: 5px 10px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                position: relative;
+                overflow: hidden;
+            `;
 
-            copyButton.addEventListener('click', () => handleCopyBet(row));
+            copyButton.addEventListener('click', (e) => {
+                handleCopyBet(row);
+                
+                // Visual feedback
+                copyButton.style.backgroundColor = '#28a745';
+                copyButton.textContent = 'Copied!';
+                
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    background: rgba(255, 255, 255, 0.7);
+                    width: 100%;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    opacity: 1;
+                    pointer-events: none;
+                    animation: ripple 0.6s ease-out;
+                `;
+                
+                copyButton.appendChild(ripple);
+                
+                // Remove ripple after animation
+                setTimeout(() => ripple.remove(), 600);
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    copyButton.style.backgroundColor = '#007bff';
+                    copyButton.textContent = 'Copy Bet';
+                }, 1500);
+            });
 
             const lastCell = row.querySelector('td:last-child');
             if (lastCell) {
@@ -138,4 +174,30 @@
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
+
+    // Add CSS animation to document
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            from {
+                transform: scale(0);
+                opacity: 1;
+            }
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .copy-bet-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .copy-bet-button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+    `;
+    document.head.appendChild(style);
 })();
