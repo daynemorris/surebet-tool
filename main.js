@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Enhanced Surebet Tool
+// @name         Surebet Tool
 // @namespace    http://tampermonkey.net/
 // @version      2024-12-10
 // @description  Adds bet size calculation and copy functionality to Surebet rows
